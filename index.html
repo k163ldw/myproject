@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내가 매일 기쁘게 | 작가 임동욱의 서재</title>
+    <!-- Google Fonts: 지적인 세리프(Noto Serif KR)와 깔끔한 산세리프(Noto Sans KR) 조화 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. 디자인 토큰 & 테마 변수 설정 (라이트 모드 기본 / 다크 모드 지원)
+           ========================================================================== */
+        :root {
+            /* 배경 컬러: 따뜻한 아이보리 & 서재 페이퍼 톤 */
+            --bg-primary: #FAF8F5;
+            --bg-secondary: #F2EFE9;
+            --bg-card: #FFFFFF;
+            --bg-header: rgba(250, 248, 245, 0.88);
+            
+            /* 텍스트 컬러: 짙은 네이비/차콜 계열 */
+            --text-primary: #1E252B;
+            --text-secondary: #4A5568;
+            --text-muted: #718096;
+            
+            /* 포인트 컬러: 따뜻한 우드 & 앤티크 골드 */
+            --accent-primary: #8C6D46;
+            --accent-hover: #6E5332;
+            --accent-subtle: rgba(140, 109, 70, 0.12);
+            --navy-deep: #1B2A4A;
+            
+            /* 보더 및 그림자 */
+            --border-color: #E5E0D8;
+            --shadow-sm: 0 2px 8px rgba(30, 37, 43, 0.04);
+            --shadow-md: 0 8px 24px rgba(30, 37, 43, 0.08);
+            --shadow-lg: 0 16px 36px rgba(30, 37, 43, 0.12);
+            
+            /* 폰트 패밀리 */
+            --font-serif: 'Noto Serif KR', Georgia, serif;
+            --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* 트랜지션 */
+            --transition-base: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #14171A;
+            --bg-secondary: #1C2024;
+            --bg-card: #22272C;
+            --bg-header: rgba(20, 23, 26, 0.88);
+            
+            --text-primary: #F0EDE6;
+            --text-secondary: #B8C0C8;
+            --text-muted: #88929B;
+            
+            --accent-primary: #C5A06E;
+            --accent-hover: #D8B685;
+            --accent-subtle: rgba(197, 160, 110, 0.15);
+            --navy-deep: #8BA3D4;
+            
+            --border-color: #2F363D;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.45);
+        }
+
+        /* ==========================================================================
+           2. 기본 리셋 및 공통 스타일
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            transition: background-color 0.35s ease, color 0.35s ease;
+            overflow-x: hidden;
+            word-break: keep-all;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-base);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* 섹션 헤더 공통 스타일 */
+        .section-header {
+            margin-bottom: 3.5rem;
+            text-align: center;
+        }
+
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .section-divider {
+            width: 48px;
+            height: 2px;
+            background-color: var(--accent-primary);
+            margin: 1.25rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* 스크롤 페이드인 애니메이션 (IntersectionObserver 연동) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           3. 헤더 및 내비게이션
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-base);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .brand-logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-penname {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            color: var(--accent-primary);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.75rem;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 테마 전환 버튼 & 모바일 메뉴 버튼 */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           4. 히어로(Hero) 섹션
+           ========================================================================== */
+        .hero {
+            padding-top: 10.5rem;
+            padding-bottom: 7rem;
+            position: relative;
+            background: radial-gradient(circle at 85% 20%, var(--accent-subtle), transparent 55%);
+        }
+
+        .hero-inner {
+            max-width: 820px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-penname-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1.1rem;
+            background-color: var(--accent-subtle);
+            color: var(--accent-primary);
+            border: 1px solid rgba(140, 109, 70, 0.25);
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.1rem, 5vw, 3.25rem);
+            font-weight: 700;
+            line-height: 1.35;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title span {
+            color: var(--accent-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .keyword-tag {
+            padding: 0.5rem 1.1rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+        }
+
+        .keyword-tag:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .hero-cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 0.9rem 2rem;
+            background-color: var(--accent-primary);
+            color: #FFFFFF;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            padding: 0.9rem 2rem;
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-base);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           5. 소개(About) 섹션
+           ========================================================================== */
+        .about-intro-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.75rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-intro-box::before {
+            content: '“';
+            position: absolute;
+            top: 0.5rem;
+            left: 1.75rem;
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            color: var(--accent-subtle);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .about-greeting-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .about-greeting-text {
+            color: var(--text-secondary);
+            font-size: 1.03rem;
+            line-height: 1.9;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .about-greeting-text:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .about-signature {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+        }
+
+        .signature-name {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        /* 관심사 3열 카드 그리드 */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+        }
+
+        .interest-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 2.25rem 1.85rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .interest-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .interest-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background-color: var(--accent-subtle);
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .interest-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .interest-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .mini-tag {
+            font-size: 0.78rem;
+            padding: 0.25rem 0.65rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           6. 주요 저서 및 프로젝트(Works & Books) 섹션
+           ========================================================================== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .book-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 1.75rem;
+            align-items: flex-start;
+            transition: var(--transition-base);
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        /* 책 표지 목업 (세련된 서재 북커버 디자인) */
+        .book-cover {
+            flex-shrink: 0;
+            width: 118px;
+            height: 168px;
+            border-radius: 6px 12px 12px 6px;
+            padding: 1.1rem 0.85rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.16), inset 4px 0 8px rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+
+        .book-cover.book-ai {
+            background: linear-gradient(145deg, #1B2A4A 0%, #2C4270 100%);
+            color: #F7F3EB;
+            border-left: 5px solid #C5A06E;
+        }
+
+        .book-cover.book-novel {
+            background: linear-gradient(145deg, #6E5332 0%, #8C6D46 100%);
+            color: #FAF8F5;
+            border-left: 5px solid #2A2118;
+        }
+
+        .book-cover-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+
+        .book-cover-title {
+            font-family: var(--font-serif);
+            font-size: 0.92rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .book-cover-author {
+            font-size: 0.7rem;
+            opacity: 0.85;
+        }
+
+        .book-info {
+            flex-grow: 1;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 0.75rem;
+        }
+
+        .status-published {
+            background-color: rgba(46, 125, 50, 0.12);
+            color: #2E7D32;
+        }
+
+        [data-theme="dark"] .status-published {
+            background-color: rgba(102, 187, 106, 0.18);
+            color: #81C784;
+        }
+
+        .status-writing {
+            background-color: var(--accent-subtle);
+            color: var(--accent-primary);
+        }
+
+        .book-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .book-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.9rem;
+        }
+
+        .book-desc {
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* 프로젝트 배너 카드 */
+        .project-banner {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .project-banner-content {
+            max-width: 680px;
+        }
+
+        .project-banner h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+        }
+
+        .project-banner p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.75;
+        }
+
+        /* ==========================================================================
+           7. 발자취 및 여정(Journey & Archive) 섹션 + 필터링
+           ========================================================================== */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-bottom: 2.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.55rem 1.35rem;
+            border-radius: 999px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-base);
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-primary);
+            color: #FFFFFF;
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .archive-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .archive-card.hidden {
+            display: none;
+        }
+
+        .archive-card.fade-in {
+            animation: cardFadeIn 0.45s ease forwards;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .archive-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .archive-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .archive-cat {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            background-color: var(--accent-subtle);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+        }
+
+        .archive-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .archive-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin-bottom: 0.65rem;
+            color: var(--text-primary);
+            line-height: 1.45;
+        }
+
+        .archive-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+
+        .archive-location {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           8. 방명록 / 소통(Guestbook & Contact) 섹션
+           ========================================================================== */
+        .guestbook-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .contact-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-panel h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+
+        .contact-panel > p {
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.75rem;
+            line-height: 1.75;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.95rem 1.1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-base);
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .contact-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background-color: var(--bg-card);
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-detail span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .contact-detail strong {
+            font-size: 0.93rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* 방명록 폼 및 리스트 */
+        .guestbook-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .guestbook-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.93rem;
+            transition: var(--transition-base);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-subtle);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 92px;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .form-feedback {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-feedback.show {
+            opacity: 1;
+        }
+
+        .guestbook-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.1rem;
+        }
+
+        .guestbook-list-header h4 {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .guestbook-count {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .guestbook-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 0.95rem;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+
+        /* 커스텀 스크롤바 */
+        .guestbook-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .guestbook-messages::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 999px;
+        }
+
+        .guest-msg-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.1rem 1.25rem;
+            animation: cardFadeIn 0.35s ease;
+        }
+
+        .guest-msg-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.45rem;
+        }
+
+        .guest-author {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .guest-relation {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent-primary);
+            background-color: var(--accent-subtle);
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+        }
+
+        .guest-meta-right {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .guest-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .guest-delete-btn {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            transition: var(--transition-base);
+        }
+
+        .guest-delete-btn:hover {
+            color: #C53030;
+            background-color: rgba(197, 48, 48, 0.1);
+        }
+
+        .guest-text {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            white-space: pre-line;
+        }
+
+        /* ==========================================================================
+           9. 푸터(Footer)
+           ========================================================================== */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 3.5rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-quote {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           10. 반응형 미디어 쿼리 (태블릿 & 모바일)
+           ========================================================================== */
+        @media (max-width: 960px) {
+            .interest-grid,
+            .archive-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .works-grid,
+            .guestbook-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            section {
+                padding: 4.5rem 0;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-card);
+                border-bottom: 1px solid var(--border-color);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.1rem;
+                box-shadow: var(--shadow-md);
+                transform: translateY(-130%);
+                opacity: 0;
+                pointer-events: none;
+                transition: var(--transition-base);
+            }
+
+            .nav-links.open {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .hero {
+                padding-top: 8.5rem;
+                padding-bottom: 5rem;
+            }
+
+            .about-intro-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .interest-grid,
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .book-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================================
+         상단 고정 내비게이션 바
+         ====================================================================== -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#hero" class="brand-logo">
+                <span class="brand-penname">내가 매일 기쁘게</span>
+                <span class="brand-sub">작가 임동욱의 서재</span>
+            </a>
+
+            <div class="nav-right">
+                <nav>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="#about">소개</a></li>
+                        <li><a href="#works">저서·프로젝트</a></li>
+                        <li><a href="#archive">발자취·여정</a></li>
+                        <li><a href="#guestbook">방명록·소통</a></li>
+                    </ul>
+                </nav>
+
+                <div class="nav-actions">
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="테마 전환" title="다크/라이트 모드 전환">
+                        <!-- 아이콘은 JS로 동적 렌더링 -->
+                        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="메뉴 열기">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==================================================================
+             1. 히어로(Hero) 섹션
+             ================================================================== -->
+        <section id="hero" class="hero">
+            <div class="container hero-inner">
+                <div class="hero-penname-badge reveal">
+                    <span>✦ 필명: 내가 매일 기쁘게 · 작가 임동욱</span>
+                </div>
+
+                <h1 class="hero-title reveal">
+                    38년의 공직 생활을 마치고,<br>
+                    <span>글쓰기와 AI, 그리고 자연</span>과 함께<br>
+                    제2의 인생을 기록합니다.
+                </h1>
+
+                <p class="hero-subtitle reveal">
+                    지난 세월 행정의 현장에서 묵묵히 쌓아온 성실함 위에,<br>
+                    이제는 문학의 깊이와 인공지능의 통찰, 대지의 숨결을 더해 매일 기쁜 오늘을 씁니다.
+                </p>
+
+                <div class="hero-keywords reveal">
+                    <span class="keyword-tag">#작가</span>
+                    <span class="keyword-tag">#AI탐구자</span>
+                    <span class="keyword-tag">#자급자족농부</span>
+                    <span class="keyword-tag">#여행가</span>
+                </div>
+
+                <div class="hero-cta-group reveal">
+                    <a href="#works" class="btn-primary">
+                        <span>주요 저서 살펴보기</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                    <a href="#guestbook" class="btn-outline">
+                        <span>서재 방명록 남기기</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             2. 소개(About) 섹션
+             ================================================================== -->
+        <section id="about">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">About the Author</span>
+                    <h2 class="section-title">인생 2막, 배움과 기록의 서재에서</h2>
+                    <div class="section-divider"></div>
+                </div>
+
+                <div class="about-intro-box reveal">
+                    <h3 class="about-greeting-title">안녕하세요, 필명 '내가 매일 기쁘게'로 인사드리는 임동욱입니다.</h3>
+                    <p class="about-greeting-text">
+                        한국원자력안전기술원(KINS)에서 38년간 행정 관리의 길을 걸으며 국가 원자력 안전의 든든한 뒷받침이 되고자 쉼 없이 달려왔습니다. 길고도 보람찼던 공직의 쉼표를 찍은 뒤, 제 앞에는 정해진 시간표 대신 스스로 채워나가는 백지 같은 하루가 펼쳐졌습니다.
+                    </p>
+                    <p class="about-greeting-text">
+                        퇴직 후 저는 오래도록 마음속에 품어온 <strong>'이야기 쓰는 삶'</strong>과, 시대의 거대한 물결인 <strong>'인공지능(AI)과 데이터 탐구'</strong>, 그리고 흙을 만지며 땀 흘리는 <strong>'자연 속 자급자족'</strong>을 조화롭게 가꾸고 있습니다. 나이는 숫자에 불과하며, 호기심이 멈추지 않는 한 인생의 전성기는 늘 현재진행형이라 믿습니다.
+                    </p>
+                    <div class="about-signature">
+                        <span>前 한국원자력안전기술원(KINS) 38년 근속</span>
+                        <span class="signature-name">임동욱 (필명: 내가 매일 기쁘게) 드림</span>
+                    </div>
+                </div>
+
+                <!-- 주요 관심사 카드 그리드 -->
+                <div class="interest-grid">
+                    <article class="interest-card reveal">
+                        <div class="interest-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                        </div>
+                        <h3>창작과 집필</h3>
+                        <p>
+                            삶의 굴곡과 가족의 사랑을 담아낸 전기 소설부터 실용서, 일상의 사유를 담은 에세이까지 직접 기획하고 독립출판으로 세상에 선보입니다.
+                        </p>
+                        <div class="interest-tags">
+                            <span class="mini-tag">#전기소설</span>
+                            <span class="mini-tag">#에세이</span>
+                            <span class="mini-tag">#독립출판</span>
+                        </div>
+                    </article>
+
+                    <article class="interest-card reveal">
+                        <div class="interest-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        </div>
+                        <h3>AI와 데이터 탐구</h3>
+                        <p>
+                            생성형 AI를 창작과 업무의 파트너로 삼고, 파이썬(Python)을 활용한 데이터 수집 및 퀀트 투자 알고리즘을 직접 설계하며 기술의 즐거움을 누립니다.
+                        </p>
+                        <div class="interest-tags">
+                            <span class="mini-tag">#파이썬퀀트</span>
+                            <span class="mini-tag">#생성형AI</span>
+                            <span class="mini-tag">#업무자동화</span>
+                        </div>
+                    </article>
+
+                    <article class="interest-card reveal">
+                        <div class="interest-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-7"></path><path d="M9 15c-3.5 0-6-2.5-6-6 0-3.5 3-6 6-6 2.5 0 4.5 1.5 5.5 3.5C15.5 4.5 17.5 3 20 3c3 0 6 2.5 6 6 0 3.5-2.5 6-6 6"></path></svg>
+                        </div>
+                        <h3>자연과 일상</h3>
+                        <p>
+                            정성껏 포도나무를 가꾸며 계절의 결실을 맛보고, 명산 등반과 탁구·스크린골프를 통해 건강한 몸과 맑은 정신을 유지합니다.
+                        </p>
+                        <div class="interest-tags">
+                            <span class="mini-tag">#포도농사</span>
+                            <span class="mini-tag">#등산</span>
+                            <span class="mini-tag">#탁구·스크린골프</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             3. 주요 저서 및 프로젝트(Works & Books) 섹션
+             ================================================================== -->
+        <section id="works">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">Works & Projects</span>
+                    <h2 class="section-title">주요 저서 및 창작 프로젝트</h2>
+                    <div class="section-divider"></div>
+                </div>
+
+                <div class="works-grid">
+                    <!-- 도서 1 -->
+                    <article class="book-card reveal">
+                        <div class="book-cover book-ai" aria-hidden="true">
+                            <span class="book-cover-label">AI & QUANT</span>
+                            <div class="book-cover-title">나는 AI로<br>주식에<br>투자한다</div>
+                            <span class="book-cover-author">임동욱 지음</span>
+                        </div>
+                        <div class="book-info">
+                            <span class="status-badge status-published">2026년 부크크(Bookk) 출간</span>
+                            <h3 class="book-title">《나는 AI로 주식에 투자한다 / 부의 자동화》</h3>
+                            <p class="book-meta">분야: 경제·재테크 / IT·데이터 분석</p>
+                            <p class="book-desc">
+                                감에 의존하는 투자를 넘어 AI와 파이썬(Python)을 활용한 데이터 기반 퀀트 투자 전략을 담은 실전 안내서입니다. 비전공자도 쉽게 따라 할 수 있는 자동화 시스템 구축 노하우를 공유합니다.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- 도서 2 -->
+                    <article class="book-card reveal">
+                        <div class="book-cover book-novel" aria-hidden="true">
+                            <span class="book-cover-label">BIOGRAPHY</span>
+                            <div class="book-cover-title">다섯<br>부모의<br>딸</div>
+                            <span class="book-cover-author">내가 매일 기쁘게</span>
+                        </div>
+                        <div class="book-info">
+                            <span class="status-badge status-writing">집필 및 퇴고 진행 중</span>
+                            <h3 class="book-title">《다섯 부모의 딸》</h3>
+                            <p class="book-meta">분야: 장편 전기 소설 / 휴먼 드라마</p>
+                            <p class="book-desc">
+                                격동의 시대를 건너며 다섯 부모의 사랑과 헌신 속에서 피어난 한 여성의 생애를 묵직한 필치로 그려낸 전기 소설입니다. 세대를 잇는 가족애와 삶의 깊이를 섬세하게 복원하고 있습니다.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- 진행 중인 프로젝트 배너 -->
+                <div class="project-banner reveal">
+                    <div class="project-banner-content">
+                        <h3>✦ AI 프롬프트 엔지니어링 & 파이썬 자동화 아카이브</h3>
+                        <p>
+                            퇴직 이후의 창작 활동과 자산 관리를 돕기 위해 자체 제작한 파이썬 기반 금융 데이터 수집기, 글쓰기 보조 AI 프롬프트 워크플로우를 구축하고 블로그 연재를 통해 독자들과 지식을 나누고 있습니다.
+                        </p>
+                    </div>
+                    <a href="#guestbook" class="btn-outline">블로그 및 연재 문의</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             4. 발자취 및 여정(Journey & Archive) 섹션
+             ================================================================== -->
+        <section id="archive">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">Journey & Archive</span>
+                    <h2 class="section-title">인생 2막의 발자취와 기록</h2>
+                    <div class="section-divider"></div>
+                </div>
+
+                <!-- 카테고리 필터 버튼 -->
+                <div class="filter-bar reveal" role="tablist" aria-label="활동 기록 카테고리 필터">
+                    <button type="button" class="filter-btn active" data-filter="all">전체 보기</button>
+                    <button type="button" class="filter-btn" data-filter="writing">집필·출판</button>
+                    <button type="button" class="filter-btn" data-filter="tech">AI·기술</button>
+                    <button type="button" class="filter-btn" data-filter="travel">여행·일상</button>
+                </div>
+
+                <!-- 아카이브 카드 그리드 -->
+                <div class="archive-grid" id="archiveGrid">
+                    <article class="archive-card reveal" data-category="writing">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">집필·출판</span>
+                                <span class="archive-date">2026</span>
+                            </div>
+                            <h3>《나는 AI로 주식에 투자한다》 출간</h3>
+                            <p>
+                                오랜 시간 연구한 AI 기반 주식 분석 기법과 파이썬 백테스팅 코드를 한 권의 책으로 엮어 부크크(Bookk)를 통해 정식 출간했습니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 독립출판 · 경제/IT</div>
+                    </article>
+
+                    <article class="archive-card reveal" data-category="travel">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">여행·일상</span>
+                                <span class="archive-date">대자연 탐방</span>
+                            </div>
+                            <h3>내몽골 초원과 쿠부치 사막 횡단</h3>
+                            <p>
+                                끝없이 펼쳐진 오르도스의 대초원과 황금빛 쿠부치 사막의 능선을 걸으며 자연의 광대함 앞에서 삶의 겸손과 새로운 영감을 얻었습니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 내몽골 오르도스 · 쿠부치 사막</div>
+                    </article>
+
+                    <article class="archive-card reveal" data-category="tech">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">AI·기술</span>
+                                <span class="archive-date">친환경 에너지</span>
+                            </div>
+                            <h3>100kW급 태양광 발전소 구축 및 운영</h3>
+                            <p>
+                                은퇴 후 안정적인 에너지 자립과 친환경 가치 실현을 위해 100kW 규모의 태양광 발전소를 직접 기획·구축하여 운영하고 있습니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 신재생에너지 프로젝트</div>
+                    </article>
+
+                    <article class="archive-card reveal" data-category="travel">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">여행·일상</span>
+                                <span class="archive-date">해외 트레킹</span>
+                            </div>
+                            <h3>중국 후난성 망산국립삼림공원 산행</h3>
+                            <p>
+                                기암괴석과 운해가 어우러진 망산국립삼림공원의 절벽 잔도를 걸으며 대자연이 빚어낸 웅장한 산수화를 가슴에 담았습니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 중국 후난성 망산</div>
+                    </article>
+
+                    <article class="archive-card reveal" data-category="writing">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">집필·출판</span>
+                                <span class="archive-date">집필 중</span>
+                            </div>
+                            <h3>장편 전기 소설 《다섯 부모의 딸》 집필</h3>
+                            <p>
+                                한 인물의 파란만장한 생애와 가족사를 치밀한 자료 조사와 따뜻한 문체로 복원하며 마지막 탈고를 향해 나아가고 있습니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 서재 · 장편 소설</div>
+                    </article>
+
+                    <article class="archive-card reveal" data-category="travel">
+                        <div>
+                            <div class="archive-top">
+                                <span class="archive-cat">여행·일상</span>
+                                <span class="archive-date">사계절 일상</span>
+                            </div>
+                            <h3>한라산·계룡산 등반과 포도밭 가꾸기</h3>
+                            <p>
+                                사계절 한라산과 계룡산 능선에 오르며 체력을 다지고, 텃밭의 포도나무를 정성껏 돌보며 땀방울의 정직함을 배웁니다.
+                            </p>
+                        </div>
+                        <div class="archive-location">📍 한라산 · 계룡산 · 자급자족 텃밭</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             5. 방명록 / 소통(Guestbook & Contact) 섹션
+             ================================================================== -->
+        <section id="guestbook">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="section-eyebrow">Guestbook & Contact</span>
+                    <h2 class="section-title">서재 방명록 및 소통</h2>
+                    <div class="section-divider"></div>
+                </div>
+
+                <div class="guestbook-layout">
+                    <!-- 좌측: 연락처 및 채널 안내 -->
+                    <div class="contact-panel reveal">
+                        <h3>따뜻한 인사를 기다립니다</h3>
+                        <p>
+                            저서에 대한 감상, AI 및 데이터 탐구 이야기, 혹은 소소한 안부 인사까지 언제든 환영합니다. 서재에 들러 발자취를 남겨주세요.
+                        </p>
+
+                        <div class="contact-list">
+                            <a href="https://blog.naver.com" target="_blank" rel="noopener noreferrer" class="contact-item">
+                                <div class="contact-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                </div>
+                                <div class="contact-detail">
+                                    <span>작가 블로그 · 연재 공간</span>
+                                    <strong>내가 매일 기쁘게 서재 블로그</strong>
+                                </div>
+                            </a>
+
+                            <a href="mailto:author.lim@example.com" class="contact-item">
+                                <div class="contact-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                </div>
+                                <div class="contact-detail">
+                                    <span>집필 · 출판 · 강연 문의</span>
+                                    <strong>author.lim@example.com</strong>
+                                </div>
+                            </a>
+                        </div>
+
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0;">
+                            * 남기신 방명록 메시지는 현재 브라우저(localStorage)에 안전하게 저장되어 언제든 다시 확인하실 수 있습니다.
+                        </p>
+                    </div>
+
+                    <!-- 우측: 인터랙티브 방명록 -->
+                    <div class="guestbook-panel reveal">
+                        <form class="guestbook-form" id="guestbookForm">
+                            <div class="form-row">
+                                <input type="text" id="guestName" class="form-input" placeholder="성함 또는 닉네임 *" maxlength="20" required>
+                                <input type="text" id="guestRelation" class="form-input" placeholder="인연 (예: 독자, 옛 동료, 지인)" maxlength="20">
+                            </div>
+                            <textarea id="guestMessage" class="form-textarea" placeholder="임동욱 작가님께 따뜻한 응원이나 안부 메시지를 남겨주세요. *" maxlength="300" required></textarea>
+                            <div class="form-footer">
+                                <span class="form-feedback" id="formFeedback">소중한 방명록이 등록되었습니다.</span>
+                                <button type="submit" class="btn-primary">방명록 등록하기</button>
+                            </div>
+                        </form>
+
+                        <div class="guestbook-list-header">
+                            <h4>방문자 응원 메시지</h4>
+                            <span class="guestbook-count" id="guestbookCount">총 0건</span>
+                        </div>
+
+                        <div class="guestbook-messages" id="guestbookMessages">
+                            <!-- 자바스크립트로 렌더링 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================================================================
+         하단 푸터(Footer)
+         ====================================================================== -->
+    <footer>
+        <div class="container">
+            <p class="footer-quote">“오늘도 배움과 기록이 있어 내가 매일 기쁩니다.”</p>
+            <p class="footer-copy">© 2026 임동욱 (필명: 내가 매일 기쁘게). All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ======================================================================
+         Vanilla JavaScript: 테마 전환, 스크롤 애니메이션, 필터링, 방명록 기능
+         ====================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /* ------------------------------------------------------------------
+               1. 다크 모드 / 라이트 모드 전환 기능
+               ------------------------------------------------------------------ */
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const htmlEl = document.documentElement;
+
+            const sunSVG = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+            const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+
+            function applyTheme(theme) {
+                htmlEl.setAttribute('data-theme', theme);
+                localStorage.setItem('lim_author_theme', theme);
+                themeIcon.innerHTML = theme === 'dark' ? sunSVG : moonSVG;
+            }
+
+            // 저장된 테마 또는 시스템 다크모드 확인
+            const savedTheme = localStorage.getItem('lim_author_theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = htmlEl.getAttribute('data-theme');
+                applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+            });
+
+            /* ------------------------------------------------------------------
+               2. 모바일 내비게이션 메뉴 토글
+               ------------------------------------------------------------------ */
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                });
+            });
+
+            /* ------------------------------------------------------------------
+               3. 스크롤 페이드인 애니메이션 (IntersectionObserver)
+               ------------------------------------------------------------------ */
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            /* ------------------------------------------------------------------
+               4. 발자취 및 여정(Archive) 카테고리 필터링
+               ------------------------------------------------------------------ */
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const archiveCards = document.querySelectorAll('.archive-card');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 버튼 활성화 상태 전환
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const selectedCategory = btn.getAttribute('data-filter');
+
+                    archiveCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        card.classList.remove('fade-in');
+
+                        if (selectedCategory === 'all' || selectedCategory === cardCategory) {
+                            card.classList.remove('hidden');
+                            // 리플로우 트리거로 재애니메이션 적용
+                            void card.offsetWidth;
+                            card.classList.add('fade-in');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            /* ------------------------------------------------------------------
+               5. 인터랙티브 방명록 (localStorage 연동)
+               ------------------------------------------------------------------ */
+            const STORAGE_KEY = 'lim_dongwook_guestbook_v1';
+            const guestbookForm = document.getElementById('guestbookForm');
+            const guestNameInput = document.getElementById('guestName');
+            const guestRelationInput = document.getElementById('guestRelation');
+            const guestMessageInput = document.getElementById('guestMessage');
+            const guestbookMessagesEl = document.getElementById('guestbookMessages');
+            const guestbookCountEl = document.getElementById('guestbookCount');
+            const formFeedbackEl = document.getElementById('formFeedback');
+
+            // 초기 환영 샘플 데이터
+            const defaultMessages = [
+                {
+                    id: 1,
+                    name: '김서연',
+                    relation: '독자',
+                    message: '《나는 AI로 주식에 투자한다》 책 정말 유익하게 읽었습니다. 38년 공직 생활 이후에도 끊임없이 새로운 기술을 배우고 나누시는 모습이 큰 귀감이 됩니다!',
+                    date: '2026.05.12',
+                    isDefault: true
+                },
+                {
+                    id: 2,
+                    name: '박정훈',
+                    relation: 'KINS 옛 동료',
+                    message: '선배님, 멋진 개인 서재 홈페이지 개설을 진심으로 축하드립니다. 집필 중이신 《다섯 부모의 딸》 출간도 손꼽아 기다리겠습니다. 늘 건강하세요!',
+                    date: '2026.06.03',
+                    isDefault: true
+                }
+            ];
+
+            function getMessages() {
+                try {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    if (!stored) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultMessages));
+                        return defaultMessages;
+                    }
+                    return JSON.parse(stored);
+                } catch (e) {
+                    return defaultMessages;
+                }
+            }
+
+            function saveMessages(messages) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+                } catch (e) {
+                    console.error('로컬 스토리지 저장 실패:', e);
+                }
+            }
+
+            // XSS 방지를 위한 텍스트 이스케이프
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function renderGuestbook() {
+                const messages = getMessages();
+                guestbookCountEl.textContent = `총 ${messages.length}건`;
+                guestbookMessagesEl.innerHTML = '';
+
+                messages.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'guest-msg-card';
+
+                    const relationBadge = item.relation
+                        ? `<span class="guest-relation">${escapeHTML(item.relation)}</span>`
+                        : '';
+
+                    const deleteBtn = !item.isDefault
+                        ? `<button type="button" class="guest-delete-btn" data-id="${item.id}" title="메시지 삭제">삭제</button>`
+                        : '';
+
+                    card.innerHTML = `
+                        <div class="guest-msg-top">
+                            <div class="guest-author">
+                                <span>${escapeHTML(item.name)}</span>
+                                ${relationBadge}
+                            </div>
+                            <div class="guest-meta-right">
+                                <span class="guest-date">${escapeHTML(item.date)}</span>
+                                ${deleteBtn}
+                            </div>
+                        </div>
+                        <p class="guest-text">${escapeHTML(item.message)}</p>
+                    `;
+
+                    guestbookMessagesEl.appendChild(card);
+                });
+
+                // 삭제 버튼 이벤트 바인딩
+                document.querySelectorAll('.guest-delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const targetId = Number(e.target.getAttribute('data-id'));
+                        const updated = getMessages().filter(m => m.id !== targetId);
+                        saveMessages(updated);
+                        renderGuestbook();
+                    });
+                });
+            }
+
+            // 방명록 등록 폼 제출
+            guestbookForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const name = guestNameInput.value.trim();
+                const relation = guestRelationInput.value.trim();
+                const message = guestMessageInput.value.trim();
+
+                if (!name || !message) return;
+
+                const now = new Date();
+                const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+
+                const newEntry = {
+                    id: Date.now(),
+                    name,
+                    relation,
+                    message,
+                    date: formattedDate,
+                    isDefault: false
+                };
+
+                const currentMessages = getMessages();
+                currentMessages.unshift(newEntry);
+                saveMessages(currentMessages);
+                renderGuestbook();
+
+                // 입력창 초기화 및 안내 문구 표시
+                guestNameInput.value = '';
+                guestRelationInput.value = '';
+                guestMessageInput.value = '';
+
+                formFeedbackEl.classList.add('show');
+                setTimeout(() => {
+                    formFeedbackEl.classList.remove('show');
+                }, 3000);
+            });
+
+            // 초기 렌더링 실행
+            renderGuestbook();
+        });
+    </script>
+</body>
+</html>
